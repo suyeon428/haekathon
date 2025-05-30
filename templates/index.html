@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>교수님 성향 테스트</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-image: url("/static/images/background.png");
+      font-family: 'Jua', sans-serif;
+      text-align: center;
+      padding: 2rem;
+      background-color: #f9f9f9;
+      background-repeat: repeat;
+      background-size: cover;
+      background-position: top left;
+      background-attachment: fixed;
+    }
+
+    .page {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .page:not(.hidden) {
+      display: flex;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .question-content > * {
+      margin-bottom: 20px;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    #questionText {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      text-align: center;
+      max-width: 80%;
+      line-height: 1.5;
+    }
+
+    .status {
+      position: relative;
+      width: 80%;
+      height: 25px;
+      background-color: #eee;
+      border-radius: 20px;
+      margin: 30px auto;
+      overflow: visible;
+    }
+
+    .statusBar {
+      height: 100%;
+      width: 0%;
+      border-radius: 20px;
+      transition: width 0.3s ease;
+      background: linear-gradient(to bottom, #febbbb 0%, #fe9090 52%, #ff5c5c 100%);
+    }
+
+    /* 상태바 따라가는 이미지 */
+    #progressIcon {
+      position: absolute;
+      top: -40px;
+      left: 0%;
+      transform: translateX(-50%);
+      width: 90px;
+      height: 90px;
+      transition: left 0.3s ease;
+      z-index: 10;
+    }
+
+    /* 상태바 끝에 고정되는 이미지 (추가됨) */
+    #fixedIcon {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      width: 90px;
+      height: 90px;
+      z-index: 10;
+    }
+
+    #responseSlider {
+      width: 80%;
+      margin-bottom: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    #sliderLabel {
+      font-size: 1.8rem;
+      margin-bottom: 30px;
+      margin-top: 10px;
+    }
+
+    button {
+      margin-top: 40px;
+      padding: 13px 20px;
+      background-color: #f71e17;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1.5rem;
+      font-weight: bold;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #c71515;
+    }
+
+    #introTitle {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 40px;
+    }
+
+    #resultTitle {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+    }
+
+    #resultDesc {
+      font-size: 2rem;
+      margin-bottom: 40px;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin: 20px auto;
+    }
+    td, th {
+      border: 1px solid #999;
+      width: 80px;
+      height: 40px;
+      text-align: center;
+      cursor: pointer;
+    }
+    td.selected {
+      background-color: #f77;
+    }
+
+    #choicetitle {
+      font-size: 2.8rem;
+    }
+
+    .choice-instruction {
+      font-size: 2.8rem;
+    }
+
+    .checkbox-group label {
+      font-size: 2.8rem;
+      display: block;
+      margin: 10px 0;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px 40px;
+      max-width: 600px;
+      margin: 30px auto;
+    }
+
+    .checkbox-group label {
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="intro" class="page">
+    <h1 id="introTitle">Professor MBTI</h1>
+    <button id="startBtn">시작하자!</button>
+  </div>
+
+  <div id="timetablePage" class="page hidden">
+    <h1>시간표를 설정하세요</h1>
+    <div id="timetableContainer"></div>
+    <button id="submitTimetable">시간표 제출</button>
+  </div>
+
+  <div id="choice" class="page hidden">
+    <h1 id="choicetitle">단과대를 선택해보자!</h1>
+    <p class="choice-instruction">듣고 싶은 교양의 개설 단과대를 선택해주세요 (복수가능)</p>
+
+    <div class="checkbox-group">
+      <label><input type="checkbox" name="college" value="인문대학"> 인문대</label>
+      <label><input type="checkbox" name="college" value="사범대학"> 사범대</label>
+      <label><input type="checkbox" name="college" value="공과대학"> 공대</label>
+      <label><input type="checkbox" name="college" value="사회과학대학"> 사과대</label>
+      <label><input type="checkbox" name="college" value="경상대학"> 경상대</label>
+    </div>
+  </div>
+
+  <div id="question" class="page hidden">
+  <div class="status">
+    <div class="statusBar" id="statusBar"></div>
+    <img id="progressIcon" src="{{ url_for('static', filename='images/cow-icon.png') }}" alt="Moving Icon">
+    <img id="fixedIcon" src="{{ url_for('static', filename='images/cow-teacher.png') }}" alt="Fixed Icon">
+
+    </div>
+  <div id="questionText"></div>
+  <input type="range" min="0" max="3" id="responseSlider">
+  <p id="sliderLabel">선택 값: <span id="sliderValue"></span></p>
+  <button id="nextBtn">다음</button>
+</div>
+
+  <div id="result" class="page hidden">
+    <h1 id="resultTitle"></h1>
+    <p id="resultDesc"></p>
+    <button onclick="location.reload()">다시 해볼래!</button>
+  </div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
