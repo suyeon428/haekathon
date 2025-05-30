@@ -47,8 +47,9 @@ const questions = [
       const days = ["월", "화", "수", "목", "금"];
       const table = document.createElement("table");
       const headerRow = document.createElement("tr");
-      headerRow.innerHTML = `<th>시간/요일</th>` + days.map(d => `<th>${d}</th>`).join('');
+      headerRow.innerHTML = `<th>시간/요일</th>` + days.map((d, i) => `<th class="day-header" data-day="${i}">${d}</th>`).join('');
       table.appendChild(headerRow);
+
 
       for (let time = 9; time < 18.5; time += 0.5) {
       const row = document.createElement("tr");
@@ -73,6 +74,24 @@ const questions = [
 
       container.innerHTML = "";
       container.appendChild(table);
+
+      document.querySelectorAll(".day-header").forEach(header => {
+        header.addEventListener("click", () => {
+          const dayIndex = header.dataset.day;
+          const allCells = document.querySelectorAll(`td[data-day='${dayIndex}']`);
+          
+          const allSelected = Array.from(allCells).every(cell => cell.classList.contains("selected"));
+          
+          allCells.forEach(cell => {
+            if (allSelected) {
+              cell.classList.remove("selected");
+            } else {
+              cell.classList.add("selected");
+            }
+          });
+        });
+      });
+
     }
 
     document.getElementById("submitTimetable").addEventListener("click", () => {
