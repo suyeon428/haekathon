@@ -30,8 +30,10 @@
 - 설문 화면 상태 바 위의 아이콘을 직접 제작하여 소소한 재미 요소를 추가시켰다. 상태 바에는 학생 호반우와 교수 호반우 캐릭터가 있으며 설문이 진행될 수록 학생 호반우가 교수 호반우에게 달려가는 듯한 모습을 연출함으로써 이 설문의 취지(최적의 교수님 찾기)를 귀엽게 나타내보였다.
 
 학생  호반우👨‍🎓
+
 <img src="https://github.com/user-attachments/assets/31d09842-c41f-4d89-a3c3-f946920ae0ea" width="200" height="200"/>
 교수 호반우👨‍🏫
+
 <img src="https://github.com/user-attachments/assets/7f2968c1-c328-4a21-9109-4eeff3e23ee2" width="200" height="200"/>
 # 사용 기술✨
 
