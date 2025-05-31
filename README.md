@@ -64,5 +64,4 @@ HAEKATHON/
 ![기능 명세서 2](https://github.com/user-attachments/assets/529f8a34-f87a-46dc-84e5-5ab3c36f921c)
 
 # API 명세서✨
-
-[API 명세서](https://www.notion.so/204837fdd1cb804fbf94e9ad2e9c3760?pvs=21)
+![API 명세서](https://github.com/user-attachments/assets/f38b56eb-8ace-47f0-95cd-ad339d679b4b)
