@@ -60,10 +60,8 @@ HAEKATHON/
 - └── venv/
 
 # 기능명세서✨
-
-기능 명세서 자세히 보기 🔗
-
-https://www.notion.so/knu-haedal/204837fdd1cb80eabe56d16543e6697b?v=204837fdd1cb802ab3ee000ce3944655&source=copy_link
+![기능 명세서 1](https://github.com/user-attachments/assets/eb3b3466-af93-40b4-8bb8-16be5f6b44b2)
+![기능 명세서 2](https://github.com/user-attachments/assets/529f8a34-f87a-46dc-84e5-5ab3c36f921c)
 
 # API 명세서✨
 
