@@ -32,9 +32,11 @@
 학생  호반우👨‍🎓
 
 <img src="https://github.com/user-attachments/assets/31d09842-c41f-4d89-a3c3-f946920ae0ea" width="200" height="200"/>
+
 교수 호반우👨‍🏫
 
 <img src="https://github.com/user-attachments/assets/7f2968c1-c328-4a21-9109-4eeff3e23ee2" width="200" height="200"/>
+
 # 사용 기술✨
 
 - **Frontend**: HTML, CSS, JavaScript
