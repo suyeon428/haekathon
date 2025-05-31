@@ -94,17 +94,12 @@ const questions = [
 
     }
 
-    document.getElementById("submitTimetable").addEventListener("click", () => {
-      timetablePage.classList.add("hidden");
-      choicePage.classList.remove("hidden");
-    });
 
     const goToQuestionBtn = document.createElement("button");
 goToQuestionBtn.textContent = "선택 완료!";
 goToQuestionBtn.id = "goToQuestion";
 choicePage.appendChild(goToQuestionBtn);
 
-goToQuestionBtn.addEventListener("click", startTest);
 
 nextBtn.addEventListener("click", handleNext);
 responseSlider.addEventListener("input", updateSliderLabel);
@@ -115,6 +110,10 @@ responseSlider.addEventListener("input", updateSliderLabel);
       totalScore = 0;
       showQuestion();
       updateProgress(0);
+
+      choicePage.classList.add("hidden");
+      questionPage.classList.remove("hidden");
+
     }
 
     function showQuestion() {
@@ -157,7 +156,6 @@ responseSlider.addEventListener("input", updateSliderLabel);
   const answers = userAnswers;
   const collegeCheckboxes = document.querySelectorAll('input[name="college"]:checked');
   const selectedColleges = Array.from(collegeCheckboxes).map(cb => cb.value);
-
   const selectedCollege = selectedColleges[0] || "";
 
   const selectedCells = document.querySelectorAll("td.selected");
@@ -181,19 +179,38 @@ responseSlider.addEventListener("input", updateSliderLabel);
   })
   .then(res => res.json())
   .then(data => {
-    resultTitle.textContent = `당신은 ${data.professor} 교수님과 찰떡궁합!`;
-    resultDesc.innerHTML = `유사도: ${data.similarity}%<br><br>
-      💡 추천 Top 3<br>
-      ${data.top3.map(t => `${t.subject} (${t.professor}) - ${t.similarity}%`).join("<br>")}<br><br>
-      😅 비추천 Bottom 3<br>
-      ${data.bottom3.map(b => `${b.subject} (${b.professor}) - ${b.similarity}%`).join("<br>")}`;
+    if (data.professor === "조건에 맞는 수업이 없습니다") {
+      resultTitle.textContent = "조건에 맞는 수업이 없습니다 😢";
+      resultDesc.innerHTML = "설정한 시간과 단과대에 맞는 수업을 찾을 수 없습니다.<br>다시 시도해보세요.";
+    } else {
+      resultTitle.textContent = `당신은 ${data.professor} 교수님과 찰떡궁합!`;
+      resultDesc.innerHTML = `유사도: ${data.similarity}%<br><br>
+        💡 추천 Top 3<br>
+        ${data.top3.map(t => `${t.subject} (${t.professor}) - ${t.similarity}%`).join("<br>")}<br><br>
+        😅 비추천 Bottom 3<br>
+        ${data.bottom3.map(b => `${b.subject} (${b.professor}) - ${b.similarity}%`).join("<br>")}`;
+    }
   });
 }
 
+  document.getElementById("submitTimetable").addEventListener("click", () => {
+  const selectedCells = document.querySelectorAll("#timetableContainer td.selected");
 
-    document.getElementById("goToQuestion").addEventListener("click", () => {
-  choicePage.classList.add("hidden");
-  questionPage.classList.remove("hidden");
-  startTest();
+  if (selectedCells.length === 0) {
+    alert("시간표에서 최소 한 칸 이상 선택해주세요!");
+    return;
+  }
+
+  timetablePage.classList.add("hidden");
+  choicePage.classList.remove("hidden");
 });
 
+
+  goToQuestionBtn.addEventListener("click", () => {
+  const selectedColleges = document.querySelectorAll('input[name="college"]:checked');
+  if (selectedColleges.length === 0) {
+    alert("단과대를 선택해주세요!");
+    return;
+  }
+  startTest();
+});
